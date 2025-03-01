@@ -1,6 +1,9 @@
 package httperrors
 
-import "fmt"
+import (
+	"fmt"
+	"runtime/debug"
+)
 
 var (
 	// Validation Errors
@@ -49,6 +52,7 @@ var (
 			Field: field,
 			Error: fmt.Sprintf("Parameter %s must be one of [%s].", field, formatAllowedValues(allowedValues)),
 			Hint:  fmt.Sprintf("Allowed values: %s.", formatAllowedValues(allowedValues)),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -58,6 +62,7 @@ var (
 			Field: header,
 			Error: fmt.Sprintf("Header %s is required.", header),
 			Hint:  fmt.Sprintf("Ensure %s is included in the request headers.", header),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -66,6 +71,7 @@ var (
 			Field: header,
 			Error: fmt.Sprintf("Header %s is invalid.", header),
 			Hint:  fmt.Sprintf("Verify the value of header %s.", header),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -73,6 +79,7 @@ var (
 		Field: "correlation_id",
 		Error: "Missing Correlation ID in request headers.",
 		Hint:  "Include 'correlation_id' in the request headers with a valid UUID.",
+		Stack:     string(debug.Stack()),
 	}
 
 	// Authentication & Authorization Errors
@@ -80,24 +87,28 @@ var (
 		Field: "auth",
 		Error: "Authentication failed. Invalid credentials.",
 		Hint:  "Ensure correct credentials are provided.",
+		Stack:     string(debug.Stack()),
 	}
 
 	Forbidden = Details{
 		Field: "auth",
 		Error: "Access denied. You do not have permission to perform this action.",
 		Hint:  "Check user roles and permissions.",
+		Stack:     string(debug.Stack()),
 	}
 
     TokenExpired = Details{
 		Field: "auth",
 		Error: "Authentication token has expired.",
 		Hint:  "Request a new token and retry.",
+		Stack:     string(debug.Stack()),
 	}
 
     InvalidToken = Details{
 		Field: "auth",
 		Error: "Invalid authentication token.",
 		Hint:  "Ensure the token is valid and not tampered with.",
+		Stack:     string(debug.Stack()),
 	}
 
 	// Resource Errors
@@ -106,6 +117,7 @@ var (
 			Field: resource,
 			Error: fmt.Sprintf("%s not found.", resource),
 			Hint:  fmt.Sprintf("Check if %s exists before making the request.", resource),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -114,6 +126,7 @@ var (
 			Field: resource,
 			Error: fmt.Sprintf("%s already exists.", resource),
 			Hint:  fmt.Sprintf("Ensure %s does not already exist before attempting to create it.", resource),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -122,6 +135,7 @@ var (
 			Field: resource,
 			Error: fmt.Sprintf("A conflict occurred with %s.", resource),
 			Hint:  fmt.Sprintf("Resolve conflicts with %s before retrying.", resource),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -129,21 +143,25 @@ var (
 	Internal = Details{
 		Field: "server",
 		Error: "An unexpected internal error occurred.",
+		Stack:     string(debug.Stack()),
 	}
 
     Database = Details{
 		Field: "database",
 		Error: "A database error occurred.",
+		Stack:     string(debug.Stack()),
 	}
 
 	ServiceDown = Details{
 		Field: "service",
 		Error: "Service is temporarily unavailable.",
+		Stack:     string(debug.Stack()),
 	}
 
 	RateLimitExceeded = Details{
 		Field: "rate_limit",
 		Error: "Rate limit exceeded. Please try again later.",
+		Stack:     string(debug.Stack()),
 	}
 
 	// Request & Payload Errors
@@ -151,17 +169,20 @@ var (
 		Field: "request",
 		Error: "Invalid JSON payload.",
 		Hint:  "Ensure the request body is a valid JSON object.",
+		Stack:     string(debug.Stack()),
 	}
 
 	RequestTimeout = Details{
 		Field: "request",
 		Error: "Request timed out. Please try again.",
 		Hint:  "Ensure the server is reachable and retry the request.",
+		Stack:     string(debug.Stack()),
 	}
 
 	UnsupportedMediaType = Details{
 		Field: "content_type",
 		Error: "Unsupported media type. Please check the request format.",
+		Stack:     string(debug.Stack()),
 		Hint:  "Use 'application/json' as the Content-Type.",
 	}
 
@@ -170,6 +191,7 @@ var (
 			Field: param,
 			Error: fmt.Sprintf("Query parameter %s is required.", param),
 			Hint:  fmt.Sprintf("Include %s in the request URL.", param),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -178,6 +200,7 @@ var (
 			Field: param,
 			Error: fmt.Sprintf("Query parameter %s is invalid.", param),
 			Hint:  fmt.Sprintf("Provide a valid value for %s.", param),
+			Stack:     string(debug.Stack()),
 		}
 	}
 
@@ -185,6 +208,7 @@ var (
 		Field: "pagination",
 		Error: "Pagination limit exceeded. Reduce the page size.",
 		Hint:  "Use a smaller page size in the request.",
+		Stack:     string(debug.Stack()),
 	}
 
 	RequiredTogether = func(fields ...string) Details {
@@ -192,6 +216,7 @@ var (
 			Field: fmt.Sprintf("%v", fields),
 			Error: fmt.Sprintf("Fields %v are required together.", fields),
 			Hint:  fmt.Sprintf("Ensure all of %v are included in the request.", fields),
+			Stack:     string(debug.Stack()),
 		}
 	}
 )
