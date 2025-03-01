@@ -16,7 +16,9 @@
 
 To install the module, use the following command:
 
-``` go get github.com/syntaxLabz/errors```
+```
+go get github.com/syntaxLabz/errors
+```
 
 ## Error Response:
 
@@ -35,7 +37,6 @@ To install the module, use the following command:
 }
 
 ```
-
 ## Example Usage
 
 ```
