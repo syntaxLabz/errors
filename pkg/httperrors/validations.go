@@ -28,7 +28,7 @@ func NewAuthError() *Error {
 
 // NewNotFoundError creates an API error for missing resources
 func NewNotFoundError(resource, value string) *Error {
-	return New(codes.NotFound, fmt.Sprintf("no %s component found for %s.", resource, value))
+	return New(codes.NotFound, fmt.Sprintf("no %s found for %s.", resource, value))
 }
 
 // NewConflictError creates an API error for conflicting resources
