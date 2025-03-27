@@ -50,7 +50,7 @@ var (
 	InvalidEnumValue = func(field string, allowedValues []string) Details {
 		return Details{
 			Field: field,
-			Error: fmt.Sprintf("Parameter %s must be one of [%s].", field, formatAllowedValues(allowedValues)),
+			Error: fmt.Sprintf("Parameter %s must be one of %s.", field, formatAllowedValues(allowedValues)),
 			Hint:  fmt.Sprintf("Allowed values: %s.", formatAllowedValues(allowedValues)),
 			Stack:     string(debug.Stack()),
 		}
